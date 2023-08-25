@@ -55,11 +55,19 @@
         <div class="ui inverted tab segment" id="default-2" data-tab="default-hide">
             <form class="ui inverted form">
                 <div class="field">
-                    <label>Server</label>
+                    <label>Select server</label>
                     <div class="ui fluid search selection dropdown" id="server-select">
                         <input type="hidden" name="server" />
                         <i class="dropdown icon"></i>
                         <div class="default text">Select Server</div>
+                    </div>
+                </div>
+                <div class="field" id="minecraft-version">
+                    <label>Select Minecraft version</label>
+                    <div class="ui fluid search selection dropdown" id="minecraft-version-select">
+                        <input type="hidden" name="minecraft-version" />
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Select Minecraft version</div>
                     </div>
                 </div>
                 <div class="field" id="emojis">
@@ -122,9 +130,9 @@
                 <i class="smile icon"></i>
                 <div class="content">
                     <div class="header" id="success-header">
-                    We found them!
+                    The creation of the resource pack has been successfully completed!
                     </div>
-                    <p id="success-msg">Found <strong id="emoji-count">NaN</strong> emojis and <strong id="sticker-count">NaN</strong> stickers which are packed in a ZIP file above.</p>
+                    <p id="success-msg">We managed to find <strong id="emoji-count">NaN</strong> emojis, which we kindly collected and packed into a resource pack. This resource pack can be downloaded by clicking on the button above!</p>
                 </div>
             </div>
 

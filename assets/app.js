@@ -85,6 +85,7 @@ editor.clearSelection();
 
 $(document).ready(function() {
     $(".menu .item").tab();
+    $("#minecraft-version").hide();
     $("#emojis").hide();
     $("#emojis2").hide();
     // $("#stickers").hide();
@@ -146,6 +147,34 @@ $(document).ready(function() {
                     return acc;
                 }, [[], []]);
 
+                const minecraftVersionDropdown = [];
+
+                let isFirstElement = true;
+
+                for (const [versionName, packFormat] of Object.entries({
+                    "1.20.x": 15,
+                    "1.19.4": 13,
+                    "1.19-1.19.2": 9,
+                    "1.18.x": 8,
+                    "1.17.x": 7
+                })) {
+                    minecraftVersionDropdown.push({
+                        name: `<img src="assets/icon/minecraft.gif" style="width: 1.5em!important; height: 1.5em!important;" /> ${versionName}`,
+                        value: packFormat,
+                        selected: isFirstElement
+                    });
+
+                    isFirstElement = false;
+                }
+
+                $("#minecraft-version-select").dropdown({
+                    values: minecraftVersionDropdown,
+                    placeholder: "Select Minecraft version",
+                    onChange: (value, text, $selected) => {
+                        globalThis.packFormat = value;
+                    }
+                })
+
                 let emojisDropdown = [];
                 for (const emoji of emojis[0]) {
                     emojisDropdown.push({
@@ -197,6 +226,8 @@ $(document).ready(function() {
                 //     }
                 // })
 
+                $("#minecraft-version").show();
+
                 $("#emojis").show();
                 if (emojisDropdown2.length > 0)
                     $("#emojis2").show();
@@ -229,7 +260,7 @@ $(document).ready(function() {
             zip.file("pack.mcmeta", JSON.stringify({
                 "pack": {
                   "description": "Auto-generated at https://aratakileo.github.io/emogg-resourcepack-maker/",
-                  "pack_format": 15
+                  "pack_format": globalThis.packFormat
                 }
             }));
 
@@ -318,7 +349,7 @@ $(document).ready(function() {
             zip.file("pack.mcmeta", JSON.stringify({
                 "pack": {
                   "description": "Auto-generated at https://aratakileo.github.io/emogg-resourcepack-maker/",
-                  "pack_format": 15
+                  "pack_format": globalThis.packFormat
                 }
             }));
 
