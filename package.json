@@ -1,0 +1,50 @@
+{
+  "name": "emogg-resourcepack-maker",
+  "version": "1.0.0",
+  "description": "Create a resource pack with emojis for the Emogg mod",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --public-url ./"
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aratakileo/emogg-resourcepack-maker.git"
+  },
+  "keywords": [
+    "discord",
+    "emoji",
+    "emojis",
+    "emoticon",
+    "emoticons",
+    "minecraft emoji mod",
+    "minecraft",
+    "emoji mod",
+    "emojis mod",
+    "emoji downloader",
+    "download emoji",
+    "emogg",
+    "mod",
+    "resourcepacks",
+    "resource packs",
+    "resource pack",
+    "resourcepack"
+  ],
+  "author": "Arataki Leo",
+  "license": "LGPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/aratakileo/emogg-resourcepack-maker/issues"
+  },
+  "homepage": "https://aratakileo.github.io/emogg-resourcepack-maker",
+  "dependencies": {
+    "file-saver": "^2.0.2",
+    "jszip": "^3.10.1"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "^2.8.3",
+    "@parcel/transformer-webmanifest": "^2.8.3",
+    "buffer": "^5.7.1",
+    "parcel": "^2.8.3",
+    "process": "^0.11.10"
+  }
+}

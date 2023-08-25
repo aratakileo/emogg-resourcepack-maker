@@ -1,0 +1,61 @@
+body {
+	background: #E15371;
+	margin: 2%;
+	height: 0% !important;
+}
+
+a {
+	color: #e34063;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #E31440;
+	text-decoration: underline;
+}
+
+#messages div.message {
+	display: none;
+}
+
+#icon {
+	width: 45px;
+	height: 45px;
+	border-radius: 6px;
+}
+
+#main-title {
+	position: absolute;
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	margin-left: 10px;
+}
+
+#footer {
+	margin-top: 60px;
+	width: 100%;
+	position: relative;
+	display: flex;
+}
+
+#footer-container {
+	position: absolute;
+	left: 50%;
+	-ms-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+.header {
+	position: relative;
+	display: flex;
+}
+
+.footer-icon {
+	height: 35px;
+	width: 35px;
+}
+
+.footer-badge {
+	margin-right: 10px;
+}
