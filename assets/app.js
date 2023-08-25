@@ -287,7 +287,7 @@ $(document).ready(function() {
 
             downloadBtn.click(() => {
                 zip.generateAsync({ type: "blob" }).then(content => {
-                    saveAs(content, `emogg-${cleanGuildName}-resourcepack.zip`);
+                    saveAs(content, `emogg-discord-${cleanGuildName}.zip`);
                 });
             })
         } catch(err) {
@@ -362,7 +362,7 @@ $(document).ready(function() {
 
             $("#download").click(() => {
                 zip.generateAsync({ type: "blob" }).then(content => {
-                    saveAs(content, `emogg-${cleanGuildName}-resourcepack.zip`);
+                    saveAs(content, `emogg-discord-${cleanGuildName}.zip`);
                 });
             })
         } catch(err) {
