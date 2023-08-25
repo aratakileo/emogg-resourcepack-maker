@@ -217,7 +217,8 @@ $(document).ready(function() {
         if (!globalThis.emojis.length) return error("Please select at least one emoji.");
         try {
             if (globalThis.guild.emojis.length < 1) return error("This server doesn't have any emojis!");
-            const cleanGuildName = globalThis.guild.name.replace(/\s/g, "_").replace(/\W/g, "").toLowerCase();
+            const cleanGuildName = globalThis.guild.name.replace(/\s/g, "_").replace(/\W/g, "");
+            const cleanGuildNameLower = cleanGuildName.toLowerCase();
             console.log("Emojis:", globalThis.emojis.length);
 
             show("#loading");
@@ -244,7 +245,7 @@ $(document).ready(function() {
             zip.file("pack.png", iconRes);
             
             const baseFolder = zip.folder("assets/emogg");
-            const categoryName = `discord_server_${cleanGuildName}`;
+            const categoryName = `discord_server_${cleanGuildNameLower}`;
             const emojiFolder = baseFolder.folder(`emoji/${categoryName}`);
             // const stickerFolder = zip.folder("Stickers");
             
@@ -287,7 +288,7 @@ $(document).ready(function() {
 
             downloadBtn.click(() => {
                 zip.generateAsync({ type: "blob" }).then(content => {
-                    saveAs(content, `emogg-discord-${cleanGuildName}.zip`);
+                    saveAs(content, `emogg-discord-${cleanGuildNameLower}.zip`);
                 });
             })
         } catch(err) {
@@ -306,6 +307,7 @@ $(document).ready(function() {
             if (!guild.emojis) return error("I couldn't find the emojis object.");
             if (guild.emojis.length < 1) return error("This server doesn't have any emojis!");
             const cleanGuildName = guild.name.replace(/\s/g, "_").replace(/\W/g, "");
+            const cleanGuildNameLower = cleanGuildName.toLowerCase();
             console.log("Emojis:", guild.emojis.length);
 
             show("#loading");
@@ -332,7 +334,7 @@ $(document).ready(function() {
             zip.file("pack.png", iconRes);
             
             const baseFolder = zip.folder("assets/emogg");
-            const categoryName = `discord_server_${cleanGuildName}`;
+            const categoryName = `discord_server_${cleanGuildNameLower}`;
             const emojiFolder = baseFolder.folder(`emoji/${categoryName}`);
             // const stickerFolder = zip.folder("Stickers");
             
@@ -362,7 +364,7 @@ $(document).ready(function() {
 
             $("#download").click(() => {
                 zip.generateAsync({ type: "blob" }).then(content => {
-                    saveAs(content, `emogg-discord-${cleanGuildName}.zip`);
+                    saveAs(content, `emogg-discord-${cleanGuildNameLower}.zip`);
                 });
             })
         } catch(err) {
