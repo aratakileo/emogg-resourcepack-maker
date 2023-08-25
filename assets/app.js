@@ -3,6 +3,7 @@ import { saveAs } from "file-saver";
 
 const downloadBtn = $(`<button class="ui labeled icon red button" id="download" type="button"><i class="cloud icon"></i>Download</button>`);
 const Emoji = (emojiID, animated = false) => `https://cdn.discordapp.com/emojis/${emojiID}.${animated ? "gif" : "png"}?v=1`;
+const ServerIcon = (guild) => `https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png`;
 // media.discordapp.net was used instead of cdn.discordapp.com to bypass CORS problems
 const Sticker = (stickerID) => `https://media.discordapp.net/stickers/${stickerID}.png?size=1024`;
 const API = {
@@ -86,7 +87,7 @@ $(document).ready(function() {
     $(".menu .item").tab();
     $("#emojis").hide();
     $("#emojis2").hide();
-    $("#stickers").hide();
+    // $("#stickers").hide();
 
     $("#tokenHelp").click(() => {
         $('.ui.basic.modal').modal('show');
@@ -113,7 +114,7 @@ $(document).ready(function() {
         const guildsDropdown = (await res.json()).sort(sortAlpha).map(guild => {
             return {
                 name: guild.icon
-                    ? `<img src="https://cdn.discordapp.com/icons/${guild.id}/${guild.icon}.png" />${guild.name}`
+                    ? `<img src="${ServerIcon(guild)}" />${guild.name}`
                     : guild.name,
                 value: guild.id
             }
@@ -179,28 +180,28 @@ $(document).ready(function() {
                     }
                 })
 
-                let stickersDropdown = [];
-                for (const sticker of globalThis.stickers) {
-                    stickersDropdown.push({
-                        name: `<img src="${Sticker(sticker.id)}" style="width: 5em!important; height: 5em!important;" /> ${sticker.name}`,
-                        value: sticker.id,
-                        selected: true
-                    });
-                }
+                // let stickersDropdown = [];
+                // for (const sticker of globalThis.stickers) {
+                //     stickersDropdown.push({
+                //         name: `<img src="${Sticker(sticker.id)}" style="width: 5em!important; height: 5em!important;" /> ${sticker.name}`,
+                //         value: sticker.id,
+                //         selected: true
+                //     });
+                // }
 
-                $("#sticker-select").dropdown({
-                    values: stickersDropdown,
-                    placeholder: "Select Stickers",
-                    onChange: (value, text, $selected) => {
-                        $("#stickercount").text(`(${$("input[name='stickers']").val().split(",").length}/${globalThis.stickers.length})`);
-                    }
-                })
+                // $("#sticker-select").dropdown({
+                //     values: stickersDropdown,
+                //     placeholder: "Select Stickers",
+                //     onChange: (value, text, $selected) => {
+                //         $("#stickercount").text(`(${$("input[name='stickers']").val().split(",").length}/${globalThis.stickers.length})`);
+                //     }
+                // })
 
                 $("#emojis").show();
                 if (emojisDropdown2.length > 0)
                     $("#emojis2").show();
-                if (stickersDropdown.length > 0)
-                    $("#stickers").show();
+                // if (stickersDropdown.length > 0)
+                //     $("#stickers").show();
                 $(".active.dimmer").remove();
             }
         });
@@ -216,7 +217,7 @@ $(document).ready(function() {
         if (!globalThis.emojis.length) return error("Please select at least one emoji.");
         try {
             if (globalThis.guild.emojis.length < 1) return error("This server doesn't have any emojis!");
-            const cleanGuildName = globalThis.guild.name.replace(/\s/g, "_").replace(/\W/g, "");
+            const cleanGuildName = globalThis.guild.name.replace(/\s/g, "_").replace(/\W/g, "").toLowerCase();
             console.log("Emojis:", globalThis.emojis.length);
 
             show("#loading");
@@ -224,8 +225,33 @@ $(document).ready(function() {
             const renamedEmoji = renameEmoji(globalThis.emojis);
             const zip = new JSZip();
 
-            const emojiFolder = zip.folder("Emojis");
-            const stickerFolder = zip.folder("Stickers");
+            zip.file("pack.mcmeta", JSON.stringify({
+                "pack": {
+                  "description": "Auto-generated at https://aratakileo.github.io/emogg-resourcepack-maker/",
+                  "pack_format": 15
+                }
+            }));
+
+            let iconRes;
+            
+            try {
+                iconRes = await fetch(ServerIcon(globalThis.guild)).then(res => res.blob());
+            } catch {
+                console.log(`Server icon blocked by CORS, trying proxy`);
+                iconRes = await fetch(`https://cors-anywhere.herokuapp.com/${ServerIcon(globalThis.guild)}`).then(res => res.blob());
+            }
+
+            zip.file("pack.png", iconRes);
+            
+            const baseFolder = zip.folder("assets/emogg");
+            const categoryName = `discord_server_${cleanGuildName}`;
+            const emojiFolder = baseFolder.folder(`emoji/${categoryName}`);
+            // const stickerFolder = zip.folder("Stickers");
+            
+            let translationData = {};
+            translationData[`emogg.category.${categoryName}`] = cleanGuildName;
+
+            baseFolder.folder("lang").file("en_us.json", JSON.stringify(translationData));
 
             let emojiCount = 0;
             for (let i in renamedEmoji) {
@@ -240,28 +266,28 @@ $(document).ready(function() {
                 emojiCount++;
             }
             
-            const renamedStickers = globalThis.stickers;
-            let stickerCount = 0;
-            for (let i in renamedStickers) {
-                let res
-                try {
-                    res = await fetch(Sticker(renamedStickers[i].id)).then(res => res.blob());
-                } catch {
-                    console.log(`Sticker ${renamedStickers[i].id} blocked by CORS, trying proxy`);
-                    res = await fetch(`https://cors-anywhere.herokuapp.com/${Sticker(renamedStickers[i].id)}`).then(res => res.blob());
-                }
-                stickerFolder.file(`${renamedStickers[i].name}.png`, res);
-                stickerCount++;
-            }
+            // const renamedStickers = globalThis.stickers;
+            // let stickerCount = 0;
+            // for (let i in renamedStickers) {
+            //     let res
+            //     try {
+            //         res = await fetch(Sticker(renamedStickers[i].id)).then(res => res.blob());
+            //     } catch {
+            //         console.log(`Sticker ${renamedStickers[i].id} blocked by CORS, trying proxy`);
+            //         res = await fetch(`https://cors-anywhere.herokuapp.com/${Sticker(renamedStickers[i].id)}`).then(res => res.blob());
+            //     }
+            //     stickerFolder.file(`${renamedStickers[i].name}.png`, res);
+            //     stickerCount++;
+            // }
 
             $("#success-msg #emoji-count").text(emojiCount);
-            $("#success-msg #sticker-count").text(stickerCount);
+            // $("#success-msg #sticker-count").text(stickerCount);
             show("#success");
             $("#default-2 #submit").after(downloadBtn);
 
             downloadBtn.click(() => {
                 zip.generateAsync({ type: "blob" }).then(content => {
-                    saveAs(content, `Emojis_${cleanGuildName}.zip`);
+                    saveAs(content, `emogg-${cleanGuildName}-resourcepack.zip`);
                 });
             })
         } catch(err) {
@@ -287,8 +313,33 @@ $(document).ready(function() {
             const renamedEmoji = renameEmoji(guild.emojis);
             const zip = new JSZip();
 
-            const emojiFolder = zip.folder("Emojis");
-            const stickerFolder = zip.folder("Stickers");
+            zip.file("pack.mcmeta", JSON.stringify({
+                "pack": {
+                  "description": "Auto-generated at https://aratakileo.github.io/emogg-resourcepack-maker/",
+                  "pack_format": 15
+                }
+            }));
+
+            let iconRes;
+            
+            try {
+                iconRes = await fetch(ServerIcon(globalThis.guild)).then(res => res.blob());
+            } catch {
+                console.log(`Server icon blocked by CORS, trying proxy`);
+                iconRes = await fetch(`https://cors-anywhere.herokuapp.com/${ServerIcon(globalThis.guild)}`).then(res => res.blob());
+            }
+
+            zip.file("pack.png", iconRes);
+            
+            const baseFolder = zip.folder("assets/emogg");
+            const categoryName = `discord_server_${cleanGuildName}`;
+            const emojiFolder = baseFolder.folder(`emoji/${categoryName}`);
+            // const stickerFolder = zip.folder("Stickers");
+            
+            let translationData = {};
+            translationData[`emogg.category.${categoryName}`] = cleanGuildName;
+
+            baseFolder.folder("lang").file("en_us.json", JSON.stringify(translationData));
 
             let emojiCount = 0;
             for (let i in renamedEmoji) {
@@ -297,21 +348,21 @@ $(document).ready(function() {
                 emojiCount++;
             }
             
-            let stickerCount = 0;
-            for (let i in guild.stickers) {
-                const res = await fetch(Sticker(guild.stickers[i].id)).then(res => res.blob());
-                stickerFolder.file(`${guild.stickers[i].name}.png`, res);
-                stickerCount++;
-            }
+            // let stickerCount = 0;
+            // for (let i in guild.stickers) {
+            //     const res = await fetch(Sticker(guild.stickers[i].id)).then(res => res.blob());
+            //     stickerFolder.file(`${guild.stickers[i].name}.png`, res);
+            //     stickerCount++;
+            // }
 
             $("#success-msg #emoji-count").text(emojiCount);
-            $("#success-msg #sticker-count").text(stickerCount);
+            // $("#success-msg #sticker-count").text(stickerCount);
             show("#success");
             $("#manual #submit").after(downloadBtn);
 
             $("#download").click(() => {
                 zip.generateAsync({ type: "blob" }).then(content => {
-                    saveAs(content, `Emojis_${cleanGuildName}.zip`);
+                    saveAs(content, `emogg-${cleanGuildName}-resourcepack.zip`);
                 });
             })
         } catch(err) {
