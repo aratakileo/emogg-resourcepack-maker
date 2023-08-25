@@ -1,6 +1,6 @@
 on: push
 jobs:
-  build-node:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
        - name: Checkout 🛎️
