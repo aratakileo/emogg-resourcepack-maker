@@ -8,4 +8,4 @@ jobs:
       - run: npm --version
       - uses: actions/checkout@v3
       - run: npm install
-      - run: node app.js
+      - run: node assets/app.js
