@@ -24,12 +24,18 @@ a:hover {
 	border-radius: 6px;
 }
 
+#header {
+	position: relative;
+	display: flex;
+}
+
 #main-title {
 	position: absolute;
 	top: 50%;
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
 	margin-left: 10px;
+	color: white;
 }
 
 #footer {
@@ -44,11 +50,6 @@ a:hover {
 	left: 50%;
 	-ms-transform: translateX(-50%);
 	transform: translateX(-50%);
-}
-
-.header {
-	position: relative;
-	display: flex;
 }
 
 .footer-icon {
