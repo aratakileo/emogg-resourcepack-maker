@@ -159,7 +159,7 @@ $(document).ready(function() {
                     "1.17.x": 7
                 })) {
                     minecraftVersionDropdown.push({
-                        name: `<img src="assets/icon/minecraft.gif" style="width: 1.5em!important; height: 1.5em!important;" /> ${versionName}`,
+                        name: `<img src="https://github.com/aratakileo/static.pexty.xyz/blob/main/src/emoji/animated/minecraft.gif?raw=true" style="width: 1.5em!important; height: 1.5em!important;" /> ${versionName}`,
                         value: packFormat,
                         selected: isFirstElement
                     });
