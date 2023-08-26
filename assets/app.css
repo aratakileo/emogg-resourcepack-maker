@@ -40,6 +40,7 @@ a:hover {
 
 #footer {
 	margin-top: 60px;
+	margin-bottom: 60px;
 	width: 100%;
 	position: relative;
 	display: flex;
