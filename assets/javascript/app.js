@@ -130,7 +130,7 @@ $(document).ready(function() {
                     values: emojisDropdown,
                     placeholder: "Select Emojis",
                     onChange: (value, text, $selected) => {
-                        $("#emojicount").text(`(${$("input[name='emojis']").val().split(",").length}/${emojis[0].length})`);
+                        $("#emojicount").text(`(${$("input[name='emojis']").val().split(",").length}/${emojis[0].length + emojis[1].length})`);
                     }
                 })
 
