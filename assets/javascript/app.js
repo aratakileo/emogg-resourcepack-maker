@@ -112,7 +112,7 @@ $(document).ready(function() {
                     values: minecraftVersionDropdown,
                     placeholder: "Select Minecraft version",
                     onChange: (value, text, $selected) => {
-                        globalThis.packFormat = value;
+                        globalThis.packFormat = parseInt(value, 10);
                     }
                 })
 
