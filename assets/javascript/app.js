@@ -93,7 +93,8 @@ $(document).ready(function() {
                 let isFirstElement = true;
 
                 for (const [versionName, packFormat] of Object.entries({
-                    "1.20.x": 15,
+                    "1.20.2-1.20.4": 18,
+                    "1.20-1.20.1": 15,
                     "1.19.4": 13,
                     "1.19-1.19.2": 9,
                     "1.18.x": 8,
